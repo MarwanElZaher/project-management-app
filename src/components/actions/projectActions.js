@@ -1,4 +1,9 @@
-import { ADD_PROJECT, HIDE_FORM, SHOW_FORM } from "./actionTypes";
+import {
+  ADD_PROJECT,
+  HIDE_FORM,
+  SHOW_FORM,
+  SET_SELECTED_PROJECT,
+} from "./actionTypes";
 
 export const addProject = (project) => ({
   type: ADD_PROJECT,
@@ -11,4 +16,9 @@ export const showForm = () => ({
 
 export const hideForm = () => ({
   type: HIDE_FORM,
+});
+
+export const setSelectedProject = (selectedProject) => ({
+  type: SET_SELECTED_PROJECT,
+  payload: selectedProject,
 });

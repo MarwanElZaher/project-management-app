@@ -1,8 +1,15 @@
-import { ADD_PROJECT, SHOW_FORM, HIDE_FORM } from "../actions/actionTypes";
+import {
+  ADD_PROJECT,
+  SHOW_FORM,
+  HIDE_FORM,
+  SET_SELECTED_PROJECT,
+} from "../actions/actionTypes";
 
 const initialState = {
   projects: [],
   isFormVisible: false,
+  isProjectViewVisible: false,
+  selectedProject: null,
   // Add other project-related state properties here
 };
 
@@ -25,6 +32,13 @@ const projectReducer = (state = initialState, action) => {
       return {
         ...state,
         isFormVisible: false,
+      };
+    //show projectview component and set the selectedProject in state
+    case SET_SELECTED_PROJECT:
+      return {
+        ...state,
+        isProjectViewVisible: true,
+        selectedProject: action.payload,
       };
     default:
       return state;

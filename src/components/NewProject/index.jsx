@@ -1,28 +1,26 @@
 import React, { useState } from "react";
 import InputWithLabel from "../Input";
 import Button from "../Button";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addProject, hideForm } from "../actions/projectActions";
-import { selectFormVisibility, selectProjects } from '../selectors/projectSelector';
-import NoProjects from "../NoProjects";
+import { v4 as uuidv4 } from 'uuid';
+
 
 function NewProject() {
     const [project, setProject] = useState({
+        id: uuidv4(),
         name: '',
         details: '',
         date: ''
       });
       const [errors, setErrors] = useState({});
     const dispatch = useDispatch();
-    const isFormVisible = useSelector(selectFormVisibility);
-    const savedProjects = useSelector(selectProjects);
 
-  
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
           dispatch(addProject(project));
-          setProject({ name: '', details: '', date: '' });
+          setProject({ id: uuidv4(), name: '', details: '', date: '' });
           dispatch(hideForm())
         }
       };
@@ -38,6 +36,7 @@ function NewProject() {
       dispatch(hideForm());
       setProject(
         {
+          id: null,
           name: '',
           details: '',
           date: ''
@@ -65,8 +64,8 @@ function NewProject() {
     };
     
     return (
-        <div className="flex-grow flex-col">
-            {isFormVisible ? <form onSubmit={handleSubmit}>
+        <div className="flex-grow flex-col ">
+        <form onSubmit={handleSubmit}>
         <div className="flex flex-row-reverse gap-2">
             <Button type="submit" style="bg-gray-700 text-stone-100" label="Save"></Button>
             <Button label="Cancel" onClick={handleCancel}></Button>
@@ -77,9 +76,6 @@ function NewProject() {
             <InputWithLabel error={errors.date} name="date" value={project.date} placeholder="Please Enter dueDate" onChange={handleInputChange} type="date" label={"Due Date"} />
         </div>
         </form>
-          //to do if there are saved projects but not selected and in case there is no projects, noprojects component to be reusable at both cases
-        : savedProjects.length == 0 && <NoProjects/>}
-        
         </div>
     );
 }
