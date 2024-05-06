@@ -8,7 +8,7 @@ function App() {
     <Provider store={store}>
     <div className="flex h-screen"> 
       <SideBar />
-      <div className="flex-grow p-4"> 
+      <div className="flex-grow p-6"> 
           <RightMainWindow/>
       </div>
       </div>
