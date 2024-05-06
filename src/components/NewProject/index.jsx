@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import InputWithLabel from "../Input";
 import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +17,7 @@ function NewProject() {
     const isFormVisible = useSelector(selectFormVisibility);
     const savedProjects = useSelector(selectProjects);
 
-
+  
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
@@ -34,7 +34,16 @@ function NewProject() {
         setErrors({ ...errors, [name]: '' });
       };
     const handleCancel = () => {
-        dispatch(hideForm())
+      setErrors({});
+      dispatch(hideForm());
+      setProject(
+        {
+          name: '',
+          details: '',
+          date: ''
+        }
+      )
+
     }
     const validateForm = () => {
         let isValid = true;

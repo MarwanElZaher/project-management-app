@@ -23,7 +23,7 @@ function SideBar() {
           style="flex items-center bg-gray-500 text-stone-300 hover:bg-gray-600" 
           icon={<IoMdAdd />} label="Add Project" />
         {/* to do create a component to show the saved projects on click to show its tasks at the right */}
-        <div>{projects.length > 0 && projects.map(project=> <ul><ol>{project.name}</ol></ul>)}</div>
+        <div>{projects.length > 0 && projects.map((project, i)=> <ul key={i}><ol>{project.name}</ol></ul>)}</div>
       </div>
         
     </div>
