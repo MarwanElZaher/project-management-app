@@ -1,8 +1,10 @@
 import React, {useState} from "react";
 import InputWithLabel from "../Input";
 import Button from "../Button";
-import { useDispatch } from "react-redux";
-import { addProject } from "../actions/projectActions";
+import { useDispatch, useSelector } from "react-redux";
+import { addProject, hideForm } from "../actions/projectActions";
+import { selectFormVisibility, selectProjects } from '../selectors/projectSelector';
+import NoProjects from "../NoProjects";
 
 function NewProject() {
     const [project, setProject] = useState({
@@ -12,12 +14,16 @@ function NewProject() {
       });
       const [errors, setErrors] = useState({});
     const dispatch = useDispatch();
-    
+    const isFormVisible = useSelector(selectFormVisibility);
+    const savedProjects = useSelector(selectProjects);
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
           dispatch(addProject(project));
           setProject({ name: '', details: '', date: '' });
+          dispatch(hideForm())
         }
       };
 
@@ -28,7 +34,7 @@ function NewProject() {
         setErrors({ ...errors, [name]: '' });
       };
     const handleCancel = () => {
-
+        dispatch(hideForm())
     }
     const validateForm = () => {
         let isValid = true;
@@ -51,7 +57,7 @@ function NewProject() {
     
     return (
         <div className="flex-grow flex-col">
-        <form onSubmit={handleSubmit}>
+            {isFormVisible ? <form onSubmit={handleSubmit}>
         <div className="flex flex-row-reverse gap-2">
             <Button type="submit" style="bg-gray-700 text-stone-100" label="Save"></Button>
             <Button label="Cancel" onClick={handleCancel}></Button>
@@ -62,7 +68,11 @@ function NewProject() {
             <InputWithLabel error={errors.date} name="date" value={project.date} placeholder="Please Enter dueDate" onChange={handleInputChange} type="date" label={"Due Date"} />
         </div>
         </form>
-    </div>);
+          //to do if there are saved projects but not selected and in case there is no projects, noprojects component to be reusable at both cases
+        : savedProjects.length == 0 && <NoProjects/>}
+        
+        </div>
+    );
 }
 
 export default NewProject;
