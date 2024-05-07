@@ -14,7 +14,9 @@ const taskReducer = (state = initialState, action) => {
     case REMOVE_TASK:
       return {
         ...state,
-        tasks: state.tasks.filter((task) => task.id !== action.payload.taskId),
+        tasks: state.tasks.filter(
+          (task) => task.taskId !== action.payload.taskId
+        ),
       };
     // Handle other task-related actions here
     default:

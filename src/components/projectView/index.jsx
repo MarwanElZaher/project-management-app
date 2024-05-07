@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask } from "../actions/tasksActions";
+import { addTask, removeTask } from "../actions/tasksActions";
 import { v4 as uuidv4 } from 'uuid';
 import { selectTasksByProjectId } from "../selectors/taskSelector";
 import { deleteProject, hideProjectView, setSelectedProject } from "../actions/projectActions";
@@ -11,7 +11,6 @@ function ProjectView({ project }) {
   const dispatch = useDispatch();
 
   const relatedTasks = useSelector(state => selectTasksByProjectId(state, project.id));
-  console.log(relatedTasks, "relatedTasks")
   
   const handleAddingTask = () => {
     const taskId = uuidv4();
@@ -27,7 +26,10 @@ function ProjectView({ project }) {
     dispatch(deleteProject(project.id));
     dispatch(hideProjectView());
     dispatch(setSelectedProject(null));
-    console.log("delete project")
+  }
+
+  const handleTaskClear = (taskId) => {
+    dispatch(removeTask(taskId));
   }
   return (
     <div>
@@ -48,7 +50,7 @@ function ProjectView({ project }) {
         {relatedTasks.length > 0 ?
           relatedTasks.map((task, i) => <div key={i} className="mb-1 flex justify-between hover:bg-stone-400 rounded">
             <div className="p-2">{`${i + 1}- ${task.taskDescription}`}</div>
-            <Button label="Clear"></Button>
+            <Button onClick={() => handleTaskClear(task.taskId)} label="Clear"></Button>
           </div>) :
           <div className="flex content-center text-2xl text-stone-900"> There is no available tasks </div>
         }
