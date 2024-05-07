@@ -21,7 +21,7 @@ function NewProject() {
         if (validateForm()) {
           dispatch(addProject(project));
           setProject({ id: uuidv4(), name: '', details: '', date: '' });
-          dispatch(hideForm())
+          dispatch(hideForm());
         }
       };
 

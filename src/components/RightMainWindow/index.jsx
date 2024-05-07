@@ -10,10 +10,14 @@ function RightMainWindow() {
     const savedProjects = useSelector(selectProjects);
     const projectViewVisibility = useSelector(selectProjectViewVisibility);
     const selectedProjectToView = useSelector(selectedProject);
-    return <>
-        {isFormVisible ? <NewProject /> : savedProjects.length == 0 && <NoProjects/>}
-        {projectViewVisibility && <ProjectView project={selectedProjectToView} />}
-    </>
+
+    return (
+    <div className={`flex-grow p-6 ${!projectViewVisibility ? "flex justify-center content-center" : ""}`}> 
+        {isFormVisible && <NewProject />}
+        {projectViewVisibility && selectedProjectToView && <ProjectView project={selectedProjectToView} />}
+        {((savedProjects.length == 0 && !isFormVisible) || (!isFormVisible && !selectedProjectToView)) && <NoProjects/>}
+     </div>
+    )
 }
 
 export default RightMainWindow;

@@ -3,6 +3,8 @@ import {
   SHOW_FORM,
   HIDE_FORM,
   SET_SELECTED_PROJECT,
+  DELETE_PROJECT,
+  HIDE_PROJECT_VIEW,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -40,9 +42,20 @@ const projectReducer = (state = initialState, action) => {
         isProjectViewVisible: true,
         selectedProject: action.payload,
       };
+    case DELETE_PROJECT:
+      return {
+        ...state,
+        projects: state.projects.filter(
+          (project) => project.id !== action.payload
+        ),
+      };
+    case HIDE_PROJECT_VIEW:
+      return {
+        ...state,
+        isProjectViewVisible: false,
+      };
     default:
       return state;
   }
 };
-
 export default projectReducer;

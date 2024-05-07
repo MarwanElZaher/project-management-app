@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../Button";
 import { IoMdAdd } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedProject, showForm } from "../actions/projectActions";
+import { hideForm, hideProjectView, setSelectedProject, showForm } from "../actions/projectActions";
 import { selectFormVisibility, selectProjects } from '../selectors/projectSelector';
 
 function SideBar() {
@@ -11,12 +11,15 @@ function SideBar() {
   
   const handleAddingProject = () => {
     if (!isFormVisible) {
+      dispatch(setSelectedProject(null));
+      dispatch(hideProjectView());
       dispatch(showForm());
     }
   }
 
   const handleProjectView = (selectedProject) => {
-    dispatch(setSelectedProject(selectedProject))
+    dispatch(setSelectedProject(selectedProject));
+    dispatch(hideForm());
   };
 
   const projects = useSelector(selectProjects)

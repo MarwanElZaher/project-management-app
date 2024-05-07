@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTask } from "../actions/tasksActions";
 import { v4 as uuidv4 } from 'uuid';
 import { selectTasksByProjectId } from "../selectors/taskSelector";
+import { deleteProject, hideProjectView, setSelectedProject } from "../actions/projectActions";
 
 function ProjectView({ project }) {
   const [taskDescription, setTaskDescription] = useState("");
@@ -21,11 +22,18 @@ function ProjectView({ project }) {
     }))
     setTaskDescription('');
   }
+
+  const handleProjectDeletion = () => {
+    dispatch(deleteProject(project.id));
+    dispatch(hideProjectView());
+    dispatch(setSelectedProject(null));
+    console.log("delete project")
+  }
   return (
     <div>
       <div className="flex flex-row justify-between">
         <h1 className="text-3xl font-bold text-stone-600 mb-2">{ project.name}</h1>
-        <Button label="delete" style="text-stone-600 hover:text-stone-950" />
+        <Button onClick={handleProjectDeletion} label="delete" style="text-stone-600 hover:text-stone-950" />
       </div>
       <p className="text-stone-400 mb-4">{project.date}</p>
       <p className="text-stone-600 whitespace-pre-wrap">{project.details}</p>
