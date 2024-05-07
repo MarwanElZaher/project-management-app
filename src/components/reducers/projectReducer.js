@@ -5,6 +5,7 @@ import {
   SET_SELECTED_PROJECT,
   DELETE_PROJECT,
   HIDE_PROJECT_VIEW,
+  SHOW_PROJECT_VIEW,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -39,7 +40,6 @@ const projectReducer = (state = initialState, action) => {
     case SET_SELECTED_PROJECT:
       return {
         ...state,
-        isProjectViewVisible: true,
         selectedProject: action.payload,
       };
     case DELETE_PROJECT:
@@ -48,6 +48,11 @@ const projectReducer = (state = initialState, action) => {
         projects: state.projects.filter(
           (project) => project.id !== action.payload
         ),
+      };
+    case SHOW_PROJECT_VIEW:
+      return {
+        ...state,
+        isProjectViewVisible: true,
       };
     case HIDE_PROJECT_VIEW:
       return {

@@ -5,6 +5,7 @@ import {
   SET_SELECTED_PROJECT,
   DELETE_PROJECT,
   HIDE_PROJECT_VIEW,
+  SHOW_PROJECT_VIEW,
 } from "./actionTypes";
 
 export const addProject = (project) => ({
@@ -23,6 +24,10 @@ export const hideForm = () => ({
 export const setSelectedProject = (selectedProject) => ({
   type: SET_SELECTED_PROJECT,
   payload: selectedProject,
+});
+
+export const showProjectView = () => ({
+  type: SHOW_PROJECT_VIEW,
 });
 
 export const hideProjectView = () => ({

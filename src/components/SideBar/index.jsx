@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../Button";
 import { IoMdAdd } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { hideForm, hideProjectView, setSelectedProject, showForm } from "../actions/projectActions";
+import { hideForm, hideProjectView, setSelectedProject, showForm, showProjectView } from "../actions/projectActions";
 import { selectFormVisibility, selectProjects } from '../selectors/projectSelector';
 
 function SideBar() {
@@ -20,6 +20,7 @@ function SideBar() {
   const handleProjectView = (selectedProject) => {
     dispatch(setSelectedProject(selectedProject));
     dispatch(hideForm());
+    dispatch(showProjectView());
   };
 
   const projects = useSelector(selectProjects)

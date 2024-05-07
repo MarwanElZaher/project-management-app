@@ -10,7 +10,6 @@ function RightMainWindow() {
     const savedProjects = useSelector(selectProjects);
     const projectViewVisibility = useSelector(selectProjectViewVisibility);
     const selectedProjectToView = useSelector(selectedProject);
-
     return (
     <div className={`flex-grow p-6 ${!projectViewVisibility ? "flex justify-center content-center" : ""}`}> 
         {isFormVisible && <NewProject />}
