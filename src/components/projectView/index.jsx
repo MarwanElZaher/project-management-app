@@ -50,7 +50,7 @@ function ProjectView({ project }) {
         {relatedTasks.length > 0 ?
           relatedTasks.map((task, i) => <div key={i} className="mb-1 flex justify-between hover:bg-stone-400 rounded">
             <div className="p-2">{`${i + 1}- ${task.taskDescription}`}</div>
-            <Button onClick={() => handleTaskClear(task.taskId)} label="Clear"></Button>
+            <Button style="hover:text-red-700" onClick={() => handleTaskClear(task.taskId)} label="Clear"></Button>
           </div>) :
           <div className="flex content-center text-2xl text-stone-900"> There is no available tasks </div>
         }

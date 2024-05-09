@@ -6,10 +6,10 @@ import RightMainWindow from "./components/RightMainWindow";
 function App() {
   return (
     <Provider store={store}>
-    <div className="flex h-screen"> 
-      <SideBar />
-      <RightMainWindow/>
-      </div>
+      <main className="flex h-screen"> 
+        <SideBar />
+        <RightMainWindow/>
+      </main>
       </Provider>
   );
 }
