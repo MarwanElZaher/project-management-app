@@ -22,7 +22,7 @@ const projectReducer = (state = initialState, action) => {
       // Add the new project to the projects array in the state
       return {
         ...state,
-        projects: [...state.projects, action.payload],
+        projects: action.payload,
       };
     //show addProject form
     case SHOW_FORM:

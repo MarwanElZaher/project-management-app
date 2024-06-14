@@ -2,26 +2,45 @@ import React, { useState } from "react";
 import InputWithLabel from "../Input";
 import Button from "../Button";
 import { useDispatch } from "react-redux";
-import { addProject, hideForm } from "../actions/projectActions";
+import { hideForm } from "../actions/projectActions";
 import { v4 as uuidv4 } from 'uuid';
-
+import {supabase} from '../../supabaseClient'
 
 function NewProject() {
     const [project, setProject] = useState({
-        id: uuidv4(),
-        name: '',
-        details: '',
-        date: ''
+        project_id: uuidv4(),
+        project_name: '',
+        project_details: '',
+        project_date: ''
       });
       const [errors, setErrors] = useState({});
     const dispatch = useDispatch();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
         if (validateForm()) {
-          dispatch(addProject(project));
-          setProject({ id: uuidv4(), name: '', details: '', date: '' });
-          dispatch(hideForm());
+          try {
+            const { data, error } = await supabase
+              .from('projects')
+              .insert([project])
+              if (error) {
+                throw error;
+            }
+            dispatch(hideForm());
+
+            // Reset form fields
+            setProject({
+              project_id: uuidv4(),
+              project_name: '',
+              project_details: '',
+              project_date: ''
+            });
+
+            console.log('Project added successfully:', data);
+          } catch (error) {
+            console.error('Error adding project:', error.message);
+          }
+
         }
       };
 
@@ -36,10 +55,10 @@ function NewProject() {
       dispatch(hideForm());
       setProject(
         {
-          id: null,
-          name: '',
-          details: '',
-          date: ''
+          project_id: uuidv4(),
+          project_name: '',
+          project_details: '',
+          project_date: ''
         }
       )
 
@@ -47,16 +66,16 @@ function NewProject() {
     const validateForm = () => {
         let isValid = true;
         const newErrors = {};
-        if (!project.name.trim()) {
-          newErrors.name = 'Project name is required';
+        if (!project.project_name.trim()) {
+          newErrors.project_name = 'Project name is required';
           isValid = false;
         }
-        if (!project.details.trim()) {
-          newErrors.details = 'Project details are required';
+        if (!project.project_details.trim()) {
+          newErrors.project_details = 'Project details are required';
           isValid = false;
         }
-        if (!project.date) {
-          newErrors.date = 'Project date is required';
+        if (!project.project_date) {
+          newErrors.project_date = 'Project date is required';
           isValid = false;
         }
         setErrors(newErrors);
@@ -71,9 +90,9 @@ function NewProject() {
             <Button label="Cancel" onClick={handleCancel}></Button>
         </div>
         <div className="gap-6">
-            <InputWithLabel error={errors.name} name="name" value={project.name} placeholder="Please Enter projectTitle" onChange={handleInputChange} type="text" label={"Title"} />
-            <InputWithLabel error={errors.details} name="details" value={project.details} placeholder="Please Enter projectDescription " onChange={handleInputChange} type="text" label={"Description"} />
-            <InputWithLabel error={errors.date} name="date" value={project.date} placeholder="Please Enter dueDate" onChange={handleInputChange} type="date" label={"Due Date"} />
+            <InputWithLabel error={errors.project_name} name="project_name" value={project.project_name} placeholder="Please Enter projectTitle" onChange={handleInputChange} type="text" label={"Title"} />
+            <InputWithLabel error={errors.project_details} name="project_details" value={project.project_details} placeholder="Please Enter projectDescription " onChange={handleInputChange} type="text" label={"Description"} />
+            <InputWithLabel error={errors.project_date} name="project_date" value={project.project_date} placeholder="Please Enter dueDate" onChange={handleInputChange} type="date" label={"Due Date"} />
         </div>
         </form>
         </div>
