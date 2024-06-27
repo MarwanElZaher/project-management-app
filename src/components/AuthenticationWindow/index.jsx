@@ -28,7 +28,8 @@ function AuthenticationWindow() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-gray-100 rounded-lg shadow-lg">
+    <div class="min-h-screen flex justify-center items-center bg-gray-100">
+  <div class="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
       <form onSubmit={handleSignIn}>
         <h2 className="text-xl font-semibold mb-4">SIGN IN</h2>
         <input
@@ -61,7 +62,8 @@ function AuthenticationWindow() {
           Sign Up
         </button>
       </form>
-    </div>
+      </div>
+      </div>
   );
 }
 
