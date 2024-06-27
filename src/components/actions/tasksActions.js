@@ -1,6 +1,6 @@
 // In your actions file
 import { ADD_TASK, ADD_TASKS, REMOVE_TASK } from "./actionTypes";
-
+import { supabase } from '../../supabaseClient';
 export const addTask = (task) => ({
   type: ADD_TASK,
   payload: {
@@ -13,14 +13,14 @@ export const addTasks = (tasks) => ({
   payload: tasks,
 });
 
-export const removeTask = (taskId, projectId) => ({
+export const removeTask = (task_id, projectId) => ({
   type: REMOVE_TASK,
   payload: {
-    taskId,
+    task_id,
     projectId,
   },
 });
-export const deleteTask = (taskId) => async (dispatch) => {
+export const deleteTask = (taskId, projectId) => async (dispatch) => {
   try {
     const { error: taskError } = await supabase
       .from('tasks')
@@ -29,7 +29,7 @@ export const deleteTask = (taskId) => async (dispatch) => {
 
     if (taskError) throw taskError;
 
-    dispatch(removeTask(taskId));
+    dispatch(removeTask(taskId, projectId));
   } catch (error) {
     console.error('Error deleting task:', error);
   }
