@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import InputWithLabel from "../Input";
 import Button from "../Button";
-import { useDispatch } from "react-redux";
-import { hideForm } from "../actions/projectActions";
+import { useDispatch, useSelector } from "react-redux";
+import { addProject, hideForm } from "../actions/projectActions";
 import { v4 as uuidv4 } from 'uuid';
 import {supabase} from '../../supabaseClient'
+import { signedInUser } from '../selectors/userSelector';
 
 function NewProject() {
+    const user = useSelector(signedInUser);
     const [project, setProject] = useState({
         project_id: uuidv4(),
         project_name: '',
         project_details: '',
-        project_date: ''
+        project_date: '',
+        user_id: user.userId
       });
-      const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState({});
     const dispatch = useDispatch();
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (validateForm()) {
           try {
@@ -26,6 +29,7 @@ function NewProject() {
               if (error) {
                 throw error;
             }
+            dispatch(addProject(project))
             dispatch(hideForm());
 
             // Reset form fields
@@ -33,7 +37,7 @@ function NewProject() {
               project_id: uuidv4(),
               project_name: '',
               project_details: '',
-              project_date: ''
+              project_date: '',
             });
 
             console.log('Project added successfully:', data);

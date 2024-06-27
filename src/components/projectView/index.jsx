@@ -1,36 +1,49 @@
 import React, {useState} from "react";
 import Button from "../Button";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask, removeTask } from "../actions/tasksActions";
+import { addTask, deleteTask } from "../actions/tasksActions";
 import { v4 as uuidv4 } from 'uuid';
 import { selectTasksByProjectId } from "../selectors/taskSelector";
 import { deleteProject, hideProjectView, setSelectedProject } from "../actions/projectActions";
+import { signedInUser } from "../selectors/userSelector";
+import { supabase } from '../../supabaseClient';
 
 function ProjectView({ project }) {
   const [taskDescription, setTaskDescription] = useState("");
   const dispatch = useDispatch();
 
-  const relatedTasks = useSelector(state => selectTasksByProjectId(state, project.id));
-  
-  const handleAddingTask = () => {
-    const taskId = uuidv4();
-    dispatch(addTask({
-      projectId: project?.project_id,
-      taskDescription: taskDescription,
-      taskId: taskId,
-    }))
-    setTaskDescription('');
+  const user = useSelector(signedInUser);
+  const handleAddingTask = async () => {
+    const newTask = {
+      task_description: taskDescription,
+      task_id: uuidv4(),
+      project_id: project.project_id,
+      user_id: user.userId
+    };
+    try {
+      const { data, error } = await supabase
+        .from('tasks')
+        .insert([newTask]);
+      
+      if (error) throw error;
+      console.log('Task added successfully:', newTask);
+      dispatch(addTask(newTask))
+      setTaskDescription('');
+    }catch (error) {
+      console.error('Error adding project:', error.message);
+    }
   }
 
   const handleProjectDeletion = () => {
-    dispatch(deleteProject(project.id));
+    dispatch(deleteProject(project.project_id));
     dispatch(hideProjectView());
     dispatch(setSelectedProject(null));
   }
 
-  const handleTaskClear = (taskId) => {
-    dispatch(removeTask(taskId));
+  const handleTaskClear = (task_id) => {
+    dispatch(deleteTask(task_id));
   }
+  const relatedTasks = useSelector(state => selectTasksByProjectId(state, project.project_id));
   return (
     <div>
       <div className="flex flex-row justify-between">
@@ -46,11 +59,12 @@ function ProjectView({ project }) {
         <Button onClick={handleAddingTask} label="Add Task"></Button>
       </div>
       
-      <div className="bg-stone-300 px-3 mt-6 py-6 rounded-md">
+      <div class="bg-stone-300 px-3 mt-6 py-6 rounded-md max-h-96 w-full overflow-y-auto">
+
         {relatedTasks.length > 0 ?
           relatedTasks.map((task, i) => <div key={i} className="mb-1 flex justify-between hover:bg-stone-400 rounded">
-            <div className="p-2">{`${i + 1}- ${task.taskDescription}`}</div>
-            <Button style="hover:text-red-700" onClick={() => handleTaskClear(task.taskId)} label="Clear"></Button>
+            <div className="p-2">{`${i + 1}- ${task.task_description}`}</div>
+            <Button style="hover:text-red-700" onClick={() => handleTaskClear(task.task_id)} label="Clear"></Button>
           </div>) :
           <div className="flex content-center text-2xl text-stone-900"> There is no available tasks </div>
         }

@@ -29,7 +29,7 @@ function App() {
   }, []);
 
   // Render Auth component if there is no session
-  if (!session) {
+  if (!session ) {
     return <AuthenticationWindow/>
   }
 

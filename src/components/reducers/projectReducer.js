@@ -1,11 +1,12 @@
 import {
   ADD_PROJECT,
+  ADD_PROJECTS,
   SHOW_FORM,
   HIDE_FORM,
   SET_SELECTED_PROJECT,
-  DELETE_PROJECT,
   HIDE_PROJECT_VIEW,
   SHOW_PROJECT_VIEW,
+  REMOVE_PROJECT,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -18,11 +19,15 @@ const initialState = {
 
 const projectReducer = (state = initialState, action) => {
   switch (action.type) {
+    case ADD_PROJECTS:
+      return {
+        ...state, projects: action.payload
+      };
     case ADD_PROJECT:
       // Add the new project to the projects array in the state
       return {
         ...state,
-        projects: action.payload,
+        projects: [...state.projects, action.payload],
       };
     //show addProject form
     case SHOW_FORM:
@@ -42,11 +47,11 @@ const projectReducer = (state = initialState, action) => {
         ...state,
         selectedProject: action.payload,
       };
-    case DELETE_PROJECT:
+    case REMOVE_PROJECT:
       return {
         ...state,
         projects: state.projects.filter(
-          (project) => project.id !== action.payload
+          (project) => project.project_id !== action.payload
         ),
       };
     case SHOW_PROJECT_VIEW:
