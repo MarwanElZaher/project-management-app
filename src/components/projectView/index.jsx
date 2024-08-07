@@ -61,7 +61,7 @@ function ProjectView({ project }) {
       
       <div class="bg-stone-300 px-3 mt-6 py-6 rounded-md max-h-96 w-full overflow-y-auto">
 
-        {relatedTasks.length > 0 ?
+        {relatedTasks?.length > 0 ?
           relatedTasks.map((task, i) => <div key={i} className="mb-1 flex justify-between hover:bg-stone-400 rounded">
             <div className="p-2">{`${i + 1}- ${task.task_description}`}</div>
             <Button style="hover:text-red-700" onClick={() => handleTaskClear(task.task_id)} label="Clear"></Button>
