@@ -9,7 +9,7 @@ const taskReducer = (state = initialState, action) => {
     case ADD_TASK:
       return {
         ...state,
-        tasks: [...state.tasks, action.payload.task],
+        tasks: [...state?.tasks, action.payload.task],
       };
     case ADD_TASKS:
       return {
@@ -24,7 +24,7 @@ const taskReducer = (state = initialState, action) => {
         ),
       };
       case REMOVE_TASKS_BY_PROJECT:
-        return state.filter(task => task.project_id !== action.payload);
+        return state.tasks?.filter(task => task.project_id !== action.payload);
     // Handle other task-related actions here
     default:
       return state;

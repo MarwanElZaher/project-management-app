@@ -7,6 +7,7 @@ import { addTasks } from "../actions/tasksActions";
 import { setUser } from "../actions/userActions";
 import { selectFormVisibility, selectProjects } from '../selectors/projectSelector';
 import { supabase } from "../../supabaseClient";
+import ProfileAvatar from "../ProfileAvatar";
 
 function SideBar() {
   const isFormVisible = useSelector(selectFormVisibility);
@@ -48,7 +49,6 @@ function SideBar() {
       dispatch(setSelectedProject(null));
       dispatch(hideProjectView());
       dispatch(showForm());
-
     }
   };
 
@@ -59,21 +59,23 @@ function SideBar() {
   };
 
   return (
-    <aside className="sidebar lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-gray-700 rounded-r-xl mt-6">
-      <h2 className="text-xl font-bold text-stone-200 my-4 mb-4 uppercase md:text-xl">{user?.id} Projects</h2>
-      
-      <div className="flex flex-col items-start p-4">
-        <Button
-          onClick={handleAddingProject} 
-          style="flex items-center bg-gray-600 text-stone-300 mb-4 hover:bg-gray-500" 
-          icon={<IoMdAdd />} label="Add Project" />
-      </div>
-      
-      {projects.length > 0 && projects.map((project, i) => (
-        <div className="py-2 px-4 my-1 cursor-pointer text-white bg-gray-600 rounded hover:bg-gray-500" key={i} onClick={() => handleProjectView(project)}>
-          {project.project_name}
+    <aside className="sidebar lg:left-0 p-2 w-[300px] overflow-y-auto text-center bg-gray-700 rounded-r-xl mt-6 md:p-1 flex flex-col justify-between">
+      <div>
+        <h2 className="text-xl font-bold text-stone-200 my-4 mb-4 uppercase md:text-xl">Projects</h2>
+        <div className="flex flex-col items-start p-4">
+          <Button
+            onClick={handleAddingProject} 
+            style="flex items-center bg-gray-600 text-stone-300 mb-4 hover:bg-gray-500" 
+            icon={<IoMdAdd />} label="Add Project" />
         </div>
-      ))}
+        
+        {projects.length > 0 && projects.map((project, i) => (
+          <div className="py-2 px-4 my-1 cursor-pointer text-white bg-gray-600 rounded hover:bg-gray-500" key={i} onClick={() => handleProjectView(project)}>
+            {project.project_name}
+          </div>
+        ))}
+      </div>
+      <ProfileAvatar user={user} />
     </aside>
   );
 }
